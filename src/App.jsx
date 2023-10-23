@@ -1,6 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { decrementAction, incrementAction } from './action/action';
+import TableContent from './components/TableContent';
+import { BrowserRouter } from 'react-router-dom';
+import Routes from './Routes';
 
 const selector = state => state.contador;
 
@@ -10,31 +14,25 @@ function App() {
   const dispatch = useDispatch();
 
   function increment() {
-    dispatch({type: 'contador/increment', payload: 1});
+    dispatch(incrementAction());
   }
 
   function decrement() {
-    dispatch({type: 'contador/decrement', payload: 1});
+    dispatch(decrementAction());
   }
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
 
-      <h2>{contadorState}</h2>
+    <div className="App">
+
+     <h1>Table made it by Redux</h1>
+
+      <BrowserRouter>
+        <Routes>
+        </Routes>
+      </BrowserRouter>
+
+      <h2>{contadorState.contador}</h2>
       <button onClick={increment}>Incrementar</button>
       <button onClick={decrement}>Decrementar</button>
     </div>
