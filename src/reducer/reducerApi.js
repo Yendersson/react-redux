@@ -18,10 +18,17 @@ function reducerApi(state = initialState, action) {
             return {
                 ...state, data: newState
             };
+
+        case "api/filter":
+            let filters; 
+            filters = state.data.filter(item => item.name.first.startsWith(action.payload));
+            return { 
+                ...state, data:filters
+            }
                 
-                default:
-                    return state;
-                }
+        default:
+            return state;
+        }
                 
 }
 

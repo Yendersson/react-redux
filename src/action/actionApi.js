@@ -10,9 +10,29 @@ export const getUsers = () => {
     }
 }
 
+export const filterUser = (filter) => {
+    return {
+        type: "api/filter",
+        payload: filter
+    }
+}
+
 export const deleteUser = (index) => {
     return {
         type: "api/delete",
         payload: {id: index}
     };
 } 
+
+export const putUser = (index, state) => {
+    return async (dispatch) => {
+        const response = await axios.put('', state);
+
+        if (response.status.ok) {
+            dispatch({
+                type: "api/put",
+                payload: {id: index, state:state}
+            });
+        }    
+    }
+}
