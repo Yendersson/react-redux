@@ -11,9 +11,15 @@ export const getUsers = () => {
 }
 
 export const filterUser = (filter) => {
-    return {
-        type: "api/filter",
-        payload: filter
+    return async (dispatch) => {
+        const response = await axios.get('https://randomuser.me/api/?results=50')
+        dispatch({
+            type: "api/filter",
+            payload: {
+                data:response.data.results,
+                filter: filter
+             }
+        });
     }
 }
 

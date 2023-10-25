@@ -14,14 +14,14 @@ function reducerApi(state = initialState, action) {
                 ...state, data: action.payload
             };
         case "api/delete":
-            const newState = state.data.filter((item,index) => index != action.payload.id);
+            const newState = state.data.filter((item,index) => index !== action.payload.id);
             return {
                 ...state, data: newState
             };
 
         case "api/filter":
             let filters; 
-            filters = state.data.filter(item => item.name.first.startsWith(action.payload));
+            filters = action.payload.data.filter(item => item.name.first.startsWith(action.payload.filter));
             return { 
                 ...state, data:filters
             }
