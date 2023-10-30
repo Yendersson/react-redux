@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const TableField = ({data, id, onDelete}) => {
+const TableField = ({data, onDelete}) => {
     
 
     function deleteOne(index) {
@@ -10,16 +10,16 @@ const TableField = ({data, id, onDelete}) => {
 
     return (
             <tr>
-                <th scope="row">{id}</th>
-                <td>{data.name.first}</td>
-                <td>{data.name.last}</td>
+                <th scope="row">{data.id}</th>
+                <td>{data.first_name}</td>
+                <td>{data.last_name}</td>
                 <td>{data.email}</td>
                 <td>
-                    <Link to={"/update/"+id}>
+                    <Link to={"/update/"+data.id}>
                         <button className="btn btn-warning">Update</button>
                     </Link>
                 </td>
-                <td><button onClick={() => deleteOne(id)} className="btn btn-danger">Delete</button></td>
+                <td><button onClick={() => deleteOne(data.id)} className="btn btn-danger">Delete</button></td>
             </tr>
         ) 
 }

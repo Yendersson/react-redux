@@ -8,12 +8,12 @@ const selector = state => state.api;
 const TableContent = () => {
     const state = useSelector(selector);
     const dispatch = useDispatch();
-    const [loader, setLoader] = useState(true);
+    //const [loader, setLoader] = useState(true);
     
     
     useEffect(_=>{
         dispatch(getUsers());
-        setLoader(!loader)
+      //  setLoader(!loader)
     },[])
     
     function deleteItem(index){
@@ -28,39 +28,43 @@ const TableContent = () => {
             dispatch(getUsers());
         }
     }
+
+
+    /*Component to render */
+
+    function renderizado() {
+        if (state.loader) return (<p>Loading...</p>);
+        if (state.error.exist) return (<div>Ha ocurrido un error: {state.error.message}</div>);
+
+        return (
+            <div className="container">
+                <div>
+                    <input type="text" onChange={(e) => searching(e)} placeholder="Search" />
+                </div>
+                <table className="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">First</th>
+                            <th scope="col">Last</th>
+                            <th scope="col">Handle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {state.data.map((item,index)=> (
+                            <TableField key={index} onDelete={deleteItem} data={item}></TableField>)
+                            )}
+                    
+                    </tbody>
+                </table>
+                <span>{state.data.length} resultados</span>
+            </div>
+        )
+    } 
     
     return (
-        <div className="container">
-            {loader? 
-            (<p>Loading...</p>)    
-            :
-            (
-            <>
-            <div>
-                <input type="text" onChange={(e) => searching(e)} placeholder="Search" />
-            </div>
-            <table className="table table-hover">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">First</th>
-                        <th scope="col">Last</th>
-                        <th scope="col">Handle</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                    {state.data.map((item,index)=> (
-                        <TableField key={index} onDelete={deleteItem} id={index} data={item}></TableField>)
-                        )}
-                   
-                </tbody>
-            </table>
-            <span>{state.data.length} resultados</span>
-            </>
-        )
-    }
-        </div>
+       renderizado()
     )
 }
 

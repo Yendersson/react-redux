@@ -1,22 +1,52 @@
 import axios from "axios";
+import ApiState from "../models/ApiState.class";
+
 
 export const getUsers = () => {
+    let objState = {data:[],
+        error:{
+            exist:false,
+            message:null
+        },
+        loader:true};
+
     return async (dispatch) => {
-        const response = await axios.get('https://randomuser.me/api/?results=50')
+
+        try {
+            const response = await axios.get('https://reqres.in/api/users')
+            objState.data = response.data.data;
+            objState.loader = false; 
+        } catch (error) {
+            objState.error = {
+                exist:true,
+                message:error.message
+            };
+            objState.loader = false;
+        }
         dispatch({
             type: "api/get",
-            payload: response.data.results
+            payload: objState
         });
     }
 }
 
 export const filterUser = (filter) => {
+    let objState = {data:[], error:false, loader:true};
+
     return async (dispatch) => {
-        const response = await axios.get('https://randomuser.me/api/?results=50')
+        const response = await axios.get('https://reqres.in/api/users')
+
+        if (response.status === 200) {
+            objState.data = response.data.data;
+            objState.loader = false; 
+        } else {
+            objState.error = true;
+        }
+
         dispatch({
             type: "api/filter",
             payload: {
-                data:response.data.results,
+                data:objState,
                 filter: filter
              }
         });

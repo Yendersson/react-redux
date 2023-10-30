@@ -1,13 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { putUser } from "../action/actionApi";
+import { getUsers, putUser } from "../action/actionApi";
 
 const selector = state => state.api;
 
 const FormUpdate = () => {
-    const {id} = useParams();
+
     const state = useSelector(selector);
+    const dispatch = useDispatch();
+
+    useEffect(_=> {
+        dispatch(getUsers());
+    }, []);
+
+    const {id} = useParams();
     const currentValue = state.data.filter((item, index) => index === parseInt(id));
 
     const [changeState, setChangeState] = useState(currentValue); 
@@ -17,7 +24,6 @@ const FormUpdate = () => {
     const lastname = useRef();
     const email = useRef();
     
-    const dispatch = useDispatch();
 
     function update(e){
         e.preventDefault();
@@ -28,11 +34,9 @@ const FormUpdate = () => {
 
         const updateState = {
             ...changeState[0],
-             name:{
-                first:firstname.current.value,
-                last: lastname.current.value
-             },
-             email:email
+            first_name:firstname.current.value,
+            last_name: lastname.current.value,
+            email:email
         }
 
         setChangeState(updateState);
@@ -42,22 +46,29 @@ const FormUpdate = () => {
 
     return (
         <div>
-            #{id}
-            <br />
-            <form action="" onSubmit={(e)=> update(e)} onChange={updateData}>
-                <label htmlFor="firstname">Primer Nombre</label>
-                <input type="text" name="firstname" ref={firstname} defaultValue={currentValue[0].name.first}/>
+            {state.loader? 
+            (
+                <p>Loader...</p>
+            )
+            :
+            <>
+                #{id}
                 <br />
-                <label htmlFor="lastname">Segundo Nombre</label>
-                <input type="text" name="lastname" ref={lastname} defaultValue={currentValue[0].name.last}/>
-                <br />
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" ref={email} defaultValue={currentValue[0].email} />
+                <form action="" onSubmit={(e)=> update(e)} onChange={updateData}>
+                    <label htmlFor="firstname">Primer Nombre</label>
+                    <input type="text" name="firstname" ref={firstname} defaultValue={currentValue[0].first_name}/>
+                    <br />
+                    <label htmlFor="lastname">Segundo Nombre</label>
+                    <input type="text" name="lastname" ref={lastname} defaultValue={currentValue[0].last_name}/>
+                    <br />
+                    <label htmlFor="email">Email</label>
+                    <input type="email" name="email" ref={email} defaultValue={currentValue[0].email} />
 
-                <button>update</button>
-            </form>
-            
-            {currentValue[0].email}
+                    <button>update</button>
+                </form>
+            </>
+
+        }
 
 
         </div>
