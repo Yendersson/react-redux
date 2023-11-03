@@ -43,7 +43,7 @@ function reducerApi(state = initialState, action) {
 
         case "api/filter":
             let filters; 
-            filters = action.payload.data.data.filter(item => item.first_name.toLowerCase().startsWith(action.payload.filter.toLowerCase()));
+            filters = action.payload.data.data.filter(item => item.first_name.toLowerCase().startsWith(action.payload.filter.toLowerCase()) || item.last_name.toLowerCase().startsWith(action.payload.filter.toLowerCase()));
             return { 
                 ...state, 
                 data:filters,
