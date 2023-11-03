@@ -1,6 +1,4 @@
 import axios from "axios";
-import ApiState from "../models/ApiState.class";
-
 
 export const getUsers = () => {
     let objState = {data:[],
@@ -11,9 +9,8 @@ export const getUsers = () => {
         loader:true};
 
     return async (dispatch) => {
-
         try {
-            const response = await axios.get('https://reqres.in/api/users')
+            const response = await axios.get('http://localhost:8080/api/persons')
             objState.data = response.data.data;
             objState.loader = false; 
         } catch (error) {
@@ -31,16 +28,24 @@ export const getUsers = () => {
 }
 
 export const filterUser = (filter) => {
-    let objState = {data:[], error:false, loader:true};
+    let objState = {data:[],
+        error:{
+            exist:false,
+            message:null
+        },
+        loader:true};
 
     return async (dispatch) => {
-        const response = await axios.get('https://reqres.in/api/users')
-
-        if (response.status === 200) {
+        try {
+            const response = await axios.get('http://localhost:8080/api/persons')
             objState.data = response.data.data;
             objState.loader = false; 
-        } else {
-            objState.error = true;
+        } catch (error) {
+            objState.error = {
+                exist:true,
+                message:error.message
+            };
+            objState.loader = false;
         }
 
         dispatch({
@@ -53,21 +58,94 @@ export const filterUser = (filter) => {
     }
 }
 
-export const deleteUser = (index) => {
+export const filterByOrder = (key) =>{
     return {
-        type: "api/delete",
-        payload: {id: index}
-    };
+        type: "api/order",
+        payload: key
+    }
+}
+
+export const postUser = (info) => {
+    let objState = {data:[],
+        error:{
+            exist:false,
+            message:null
+        },
+        loader:true};
+
+    return async (dispatch) => {
+        try {
+            const response = await axios.post(
+                'http://localhost:8080/api/persons',
+                JSON.stringify(info),
+                {headers:{
+                    'Content-Type': 'application/json'
+                    }
+                })
+
+            objState.data = response.data;
+            objState.loader = false; 
+        } catch (error) {
+            objState.error = {
+                exist:true,
+                message:error.message
+            };
+            objState.loader = false;
+        }
+
+        dispatch({
+            type: "api/post",
+            payload: {
+                data:objState.data,
+             }
+        });
+    }
+}
+
+export const deleteUser = (index) => {
+    let objState = {data:[],
+        error:{
+            exist:false,
+            message:null
+        },
+        loader:true};
+
+    return async (dispatch)=>{
+        try {
+            const response = await axios.delete(`http://localhost:8080/api/persons/${index}`);
+            console.log(response.data)
+            objState.loader=false;
+        } catch (error) {
+            objState.error = {
+                exist:true,
+                message:error.message
+            };
+            objState.loader = false;
+        }
+        
+        dispatch({
+            type: "api/delete",
+            payload: {
+                id: index,
+                data: objState
+            }
+        })
+    }
 } 
 
 export const putUser = (index, state) => {
     return async (dispatch) => {
-        const response = await axios.put('', state);
+        const response = await axios.put(
+            'http://localhost:8080/api/persons',
+             JSON.stringify(state),
+              {
+                headers: {'Content-Type': 'application/json'}
+        });
 
         if (response.status.ok) {
             dispatch({
                 type: "api/put",
-                payload: {id: index, state:state}
+                payload: {id: index, data:response.data}
             });
         }    
     }
