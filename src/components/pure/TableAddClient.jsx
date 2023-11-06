@@ -35,7 +35,7 @@ const TableAddClient = ({onSubmit, display, closeModal}) => {
                 <input type="text" name="avatar" placeholder="img" />
                 <br />
                 <button>Create</button>
-                <span onClick={close}>X</span>
+                <span onClick={close} class="btn-close" aria-label="Close"></span>
 
             </form>
         </div>
