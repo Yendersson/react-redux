@@ -4,6 +4,7 @@ import { deleteUser, filterByOrder, filterUser, getUsers, postUser } from "../ac
 import TableField from "./pure/TableField";
 import Spinner from "./pure/Spinner";
 import TableAddClient from "./pure/TableAddClient";
+import { Link } from "react-router-dom";
 
 const selector = state => state.api;
 
@@ -78,6 +79,8 @@ const TableContent = () => {
                     </tbody>
                 </table>
                 <span>{state.data.length} resultados</span>
+                <Link to={"/logs"}><button>AuditLogs</button></Link>
+                
             </div>
         )
     } 
