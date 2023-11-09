@@ -10,7 +10,6 @@ export default function reducerLogs(state = initialState, action) {
 
     switch(action.type){
         case "logs/get":
-            console.log(action.payload)
             return {
                 ...state, 
                 logs:action.payload.logs,

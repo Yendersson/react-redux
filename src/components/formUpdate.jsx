@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getUsers, putUser } from "../action/actionApi";
@@ -8,6 +8,7 @@ const selector = state => state.api;
 
 const FormUpdate = () => {
 
+    const {id} = useParams();
     const state = useSelector(selector);
     const dispatch = useDispatch();
 
@@ -15,37 +16,24 @@ const FormUpdate = () => {
         dispatch(getUsers());
     }, []);
 
-    const {id} = useParams();
     const currentValue = state.data.filter((item) => item.id === parseInt(id));
-
-    const [changeState, setChangeState] = useState(currentValue); 
-
-    //DOM INPUTS
-    const firstname = useRef();
-    const lastname = useRef();
-    const email = useRef();
-    const avatar = useRef();
+    const [changeState, setChangeState] = useState([]); 
 
     function update(e){
         e.preventDefault();
-        dispatch(putUser(id, changeState));
+        const sendData = {...currentValue[0], ...changeState}
+        dispatch(putUser(id, sendData));
 
         if (state.error.exist) alert("Hubo un error");
         if (!state.error.exist) alert("Se ha actualizado con exito");
     }
 
-    function updateData(){
-
-        const updateState = {
-            ...changeState[0],
-            id:id,
-            first_name:firstname.current.value,
-            last_name: lastname.current.value,
-            email:email.current.value,
-            avatar:avatar.current.src
-        }
-
-        setChangeState(updateState);
+    function updateData(e){
+        e.preventDefault();
+        
+        const update = {...changeState};
+        update[e.target.name] = e.target.value;
+        setChangeState(update);
     }
 
     //RENDER
@@ -56,19 +44,23 @@ const FormUpdate = () => {
         return (
             <div>
             #{id}
-            <div>
-                <img ref={avatar} src={currentValue[0].avatar} alt="" />
-            </div>
             <br />
-            <form action="" onSubmit={(e)=> update(e)} onChange={updateData}>
-                <label htmlFor="firstname">Primer Nombre</label>
-                <input type="text" name="firstname" ref={firstname} defaultValue={currentValue[0].first_name}/>
-                <br />
-                <label htmlFor="lastname">Segundo Nombre</label>
-                <input type="text" name="lastname" ref={lastname} defaultValue={currentValue[0].last_name}/>
-                <br />
-                <label htmlFor="email">Email</label>
-                <input type="email" name="email" ref={email} defaultValue={currentValue[0].email} />
+            <form action="" onSubmit={(e)=> update(e)} onChange={(e) => updateData(e)}>
+
+                {Object.keys(currentValue[0]).map((item, index) => {
+                    if (item === "avatar") return (<div><img src={currentValue[0][item]} alt="" /></div>) 
+                    
+                    return (
+                        <>
+                            <label htmlFor={item}>{item === "id"? "": item.replace("_"," ")}</label>
+                            <input type={item === "email"?
+                                         item: item === "id"?
+                                          "number":"text"} 
+                            id={item} name={item} defaultValue={currentValue[0][item]} hidden={item === "id"? true:false}/>
+                        </>
+                    )
+
+                })}
 
                 <button>update</button>
             </form>

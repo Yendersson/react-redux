@@ -6,7 +6,7 @@ const TableAddClient = ({onSubmit, display, closeModal}) => {
         e.preventDefault();
 
         const data = {
-            first_name: e.target.firstname.value,
+            first_name: e.target["firstname"].value,
             last_name: e.target.lastname.value,
             email: e.target.email.value,
             avatar: e.target.avatar.value,
@@ -35,7 +35,7 @@ const TableAddClient = ({onSubmit, display, closeModal}) => {
                 <input type="text" name="avatar" placeholder="img" />
                 <br />
                 <button>Create</button>
-                <span onClick={close} class="btn-close" aria-label="Close"></span>
+                <span onClick={close} className="btn-close" aria-label="Close"></span>
 
             </form>
         </div>

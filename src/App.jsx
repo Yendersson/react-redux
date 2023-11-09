@@ -31,10 +31,11 @@ function App() {
         <Routes>
         </Routes>
       </BrowserRouter>
-
-      <h2>{contadorState.contador}</h2>
-      <button onClick={increment}>Incrementar</button>
-      <button onClick={decrement}>Decrementar</button>
+      {/* 
+        <h2>{contadorState.contador}</h2>
+        <button onClick={increment}>Incrementar</button>
+        <button onClick={decrement}>Decrementar</button>
+      */}
     </div>
   );
 }

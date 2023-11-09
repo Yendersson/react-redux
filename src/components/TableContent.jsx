@@ -51,7 +51,6 @@ const TableContent = () => {
         if (state.loader) return <Spinner></Spinner>;
         if (state.error.exist) return (<div>Ha ocurrido un error: {state.error.message}</div>);
 
-
         return (
             <div className="container">
                 <TableAddClient display={modal} onSubmit={createOne} closeModal={openModal}>
@@ -60,24 +59,28 @@ const TableContent = () => {
                     <input type="text" onChange={(e) => searching(e)} placeholder="Search" />
                     <button onClick={openModal}>+</button>
                 </div>
-                <table className="table table-hover">
+                {state.data.length > 0? 
+                    (
+                        <table className="table table-hover">
                     <thead>
                         <tr>
-                            <th onClick={() => orderById({key:"id",compare:orderBy})} scope="col">#</th>
-                            <th onClick={() => orderById({key:"first_name",compare:orderBy})} scope="col">First</th>
-                            <th onClick={() => orderById({key:"last_name",compare:orderBy})} scope="col">Last</th>
-                            <th scope="col">Image</th>
-                            <th onClick={() => orderById({key:"email",compare:orderBy})} scope="col">Email</th>
+                            {Object.keys(state.data[0]).map((item,index) =><th onClick={() => orderById({key:item,compare:orderBy})} key={index} scope="col">{item.replace("_"," ")}</th>)}
+                            
                         </tr>
                     </thead>
                     <tbody>
 
                         {state.data.map((item,index)=> (
-                            <TableField key={index} onDelete={deleteItem} data={item}></TableField>)
+                            <TableField key={index} onDelete={deleteItem} data={item} edited={true}></TableField>)
                             )}
-                    
+                
                     </tbody>
                 </table>
+                    ):
+                    <h2>No se encontraron Resultados</h2>    
+            }
+
+                
                 <span>{state.data.length} resultados</span>
                 <Link to={"/logs"}><button>AuditLogs</button></Link>
                 

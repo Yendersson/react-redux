@@ -10,7 +10,7 @@ export const getUsers = () => {
 
     return async (dispatch) => {
         try {
-            const response = await axios.get('http://localhost:8080/api/persons')
+            const response = await axios.get('http://localhost:18080/api/persons')
             objState.data = response.data.data;
             objState.loader = false; 
         } catch (error) {
@@ -37,7 +37,7 @@ export const filterUser = (filter) => {
 
     return async (dispatch) => {
         try {
-            const response = await axios.get('http://localhost:8080/api/persons')
+            const response = await axios.get('http://localhost:18080/api/persons')
             objState.data = response.data.data;
             objState.loader = false; 
         } catch (error) {
@@ -76,7 +76,7 @@ export const postUser = (info) => {
     return async (dispatch) => {
         try {
             const response = await axios.post(
-                'http://localhost:8080/api/persons',
+                'http://localhost:18080/api/persons',
                 JSON.stringify(info),
                 {headers:{
                     'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ export const deleteUser = (index) => {
 
     return async (dispatch)=>{
         try {
-            const response = await axios.delete(`http://localhost:8080/api/persons/${index}`);
+            const response = await axios.delete(`http://localhost:18080/api/persons/${index}`);
             console.log(response.data)
             objState.loader=false;
         } catch (error) {
@@ -136,7 +136,7 @@ export const deleteUser = (index) => {
 export const putUser = (index, state) => {
     return async (dispatch) => {
         const response = await axios.put(
-            'http://localhost:8080/api/persons',
+            'http://localhost:18080/api/persons',
              JSON.stringify(state),
               {
                 headers: {'Content-Type': 'application/json'}
