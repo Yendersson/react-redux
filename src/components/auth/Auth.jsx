@@ -15,8 +15,8 @@ const Auth = () => {
                                              'Content-Type': 'application/json'
                                              }
                                      })
-            localStorage.setItem("user",JSON.stringify(response.data));
-            //window.location = "/";
+            localStorage.setItem("token",JSON.stringify(response.data));
+            window.location = "/";
             
         } catch (error) {
             alert(error.response.data.error)

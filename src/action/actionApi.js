@@ -10,7 +10,7 @@ export const getUsers = () => {
 
     return async (dispatch) => {
         try {
-            const response = await axios.get('http://localhost:18080/api/persons')
+            const response = await axios.get('http://localhost:18080/api/persons',{headers: {"Authorization": ` Bearer ${localStorage.getItem("token")}`}})
             objState.data = response.data.data;
             objState.loader = false; 
         } catch (error) {
